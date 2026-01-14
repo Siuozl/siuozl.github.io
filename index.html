@@ -1,8 +1,311 @@
-<a href="https://siuoz-l.github.io/">SIUOZ-L</a>
-<style>
-  a {
-    background-color:white;
-    padding-right:90%;
-    padding-bottom:90%;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snizzle - Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00d4d4 0%, #0099cc 50%, #00d4d4 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 212, 212, 0.3);
+            padding: 50px 40px;
+            max-width: 600px;
+            width: 100%;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4d4, #0099cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 60px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 212, 212, 0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            color: #00a5a5;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 212, 212, 0.1);
+        }
+
+        .username {
+            color: #0099cc;
+            font-size: 1.1em;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #00a5a5;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #00d4d4, #0099cc);
+            border-radius: 2px;
+        }
+
+        .social-links {
+            display: grid;
+            gap: 12px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 212, 0.1), rgba(0, 153, 204, 0.1));
+            border: 2px solid #00d4d4;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #00a5a5;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #00d4d4, #0099cc);
+            color: white;
+            transform: translateX(10px);
+            box-shadow: 0 10px 25px rgba(0, 212, 212, 0.3);
+        }
+
+        .social-link-icon {
+            font-size: 1.5em;
+            margin-right: 15px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .social-link-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .social-link-platform {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .social-link-username {
+            font-size: 1em;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #00d4d4, transparent);
+            margin: 30px 0;
+        }
+
+        .about-section {
+            background: linear-gradient(135deg, rgba(0, 212, 212, 0.05), rgba(0, 153, 204, 0.05));
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #00d4d4;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #0099cc;
+            font-size: 0.9em;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-header">
+            <div class="avatar" id="avatar">S</div>
+            <h1>Snizzle</h1>
+            <p class="username">@snizzle</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Gaming & Platforms</div>
+            <div class="social-links">
+                <a href="https://www.youtube.com/@snizzle.snizzer" target="_blank" class="social-link">
+                    <span class="social-link-icon">▶️</span>
+                    <span class="social-link-text">
+                        <span class="social-link-platform">YouTube</span>
+                        <span class="social-link-username">snizzle.snizzer</span>
+                    </span>
+                </a>
+                <a href="https://scratch.mit.edu/users/siuozl_snizzle" target="_blank" class="social-link">
+                    <span class="social-link-icon">🎮</span>
+                    <span class="social-link-text">
+                        <span class="social-link-platform">Scratch</span>
+                        <span class="social-link-username">siuozl_snizzle</span>
+                    </span>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-link-icon">⛏️</span>
+                    <span class="social-link-text">
+                        <span class="social-link-platform">Minecraft Bedrock</span>
+                        <span class="social-link-username">siuozl1668</span>
+                    </span>
+                </a>
+                <a href="#" class="social-link">
+                    <span class="social-link-icon">⛏️</span>
+                    <span class="social-link-text">
+                        <span class="social-link-platform">Minecraft Java</span>
+                        <span class="social-link-username">siuozlplayz</span>
+                    </span>
+                </a>
+                <a href="https://github.com/siuozl" target="_blank" class="social-link">
+                    <span class="social-link-icon">💻</span>
+                    <span class="social-link-text">
+                        <span class="social-link-platform">GitHub</span>
+                        <span class="social-link-username">siuozl</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="section">
+            <div class="section-title">About</div>
+            <div class="about-section">
+                <p>Welcome to my profile! I'm Snizzle, a gamer and developer passionate about creating cool stuff across different platforms. Check out my social links above to see what I'm up to!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>✨ Made with aqua vibes ✨</p>
+        </div>
+    </div>
+
+    <script>
+        // Animate avatar on click
+        const avatar = document.getElementById('avatar');
+        avatar.addEventListener('click', function() {
+            this.style.animation = 'none';
+            setTimeout(() => {
+                this.style.animation = 'spin 0.6s ease-out';
+            }, 10);
+        });
+
+        // Add spin animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes spin {
+                0% {
+                    transform: rotateY(0deg);
+                }
+                100% {
+                    transform: rotateY(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add hover glow effect to social links
+        const socialLinks = document.querySelectorAll('.social-link');
+        socialLinks.forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 10px 25px rgba(0, 212, 212, 0.5)';
+            });
+            link.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '';
+            });
+        });
+
+        // Lazy load effect on page load
+        window.addEventListener('load', function() {
+            socialLinks.forEach((link, index) => {
+                link.style.opacity = '0';
+                link.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    link.style.transition = 'all 0.4s ease-out';
+                    link.style.opacity = '1';
+                    link.style.transform = 'translateX(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html> 
