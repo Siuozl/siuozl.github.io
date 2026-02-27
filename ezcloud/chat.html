@@ -202,8 +202,12 @@
                 const stored = localStorage.getItem(getStorageKey(namespace));
                 if (!stored) return {};
                 const parsed = JSON.parse(stored);
-                const data = JSON.parse(parsed.data);
-                return data;
+                // `data` may already be an object or a JSON string depending on what wrote it
+                let data = parsed.data;
+                if (typeof data === 'string') {
+                    data = JSON.parse(data);
+                }
+                return data || {};
             } catch (e) {
                 console.error("Error parsing cache data:", e);
                 return {};
@@ -213,10 +217,13 @@
         function setCacheData(namespace, key, value) {
             try {
                 const data = getCacheData(namespace);
-                data[key] = value;
+                // if the external protocol uses "setCloud" as the write key,
+                // internally we store it under "cloud" so that reads are simpler
+                const dataKey = key === SET_KEY ? "cloud" : key;
+                data[dataKey] = value;
                 const storageValue = {
                     time: Date.now(),
-                    data: JSON.stringify(data)
+                    data: data
                 };
                 localStorage.setItem(getStorageKey(namespace), JSON.stringify(storageValue));
             } catch (e) {
@@ -234,6 +241,12 @@
         const iframe = document.querySelector("iframe");
         
         let cloudValue = null;
+        // grab whatever is currently in storage so we don't miss the first message
+        const initial = getCacheData(NAMESPACE);
+        if (initial.cloud) {
+            cloudValue = initial.cloud;
+            lastMessage = cloudValue;
+        }
 
         // Listen for storage updates from iframe
         window.addEventListener("message", (event) => {
@@ -272,6 +285,7 @@
             // Send to cloud via localStorage
             try {
                 const messageString = JSON.stringify(messageObj);
+                // write using SET_KEY so iframe gets notified, but internally it will map to `cloud`
                 setCacheData(NAMESPACE, SET_KEY, messageString);
                 // Also notify iframe to sync to cloud
                 iframe.contentWindow.postMessage({
@@ -295,6 +309,14 @@
                 debug.push(`Cloud: ${cloudValue || "(empty)"}`);
                 debugDiv.textContent = debug.join(" | ");
                 
+                // prefer the value pushed by the iframe, but also read directly from storage
+                if (!cloudValue) {
+                    const stored = getCacheData(NAMESPACE);
+                    if (stored.cloud) {
+                        cloudValue = stored.cloud;
+                    }
+                }
+
                 if (cloudValue && cloudValue !== lastMessage) {
                     lastMessage = cloudValue;
                     
