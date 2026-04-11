@@ -1,317 +1,548 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Snizzle - Profile</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snizzle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #181820;
+    --surface: #1e1e28;
+    --surface2: #252530;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #e8e8f0;
+    --muted: #8888a0;
+    --accent: #7c6af0;
+    --accent2: #3ecfcf;
+    --accent3: #f07c6a;
+    --tag-bg: rgba(124,106,240,0.12);
+    --tag-text: #a89cf5;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #00d4d4 0%, #0099cc 50%, #00d4d4 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 212, 212, 0.3);
-            padding: 50px 40px;
-            max-width: 600px;
-            width: 100%;
-            animation: slideIn 0.6s ease-out;
-        }
+  html { scroll-behavior: smooth; }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
 
-        .profile-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+  /* noise grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
 
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            box-shadow: 0 10px 30px rgba(0, 212, 212, 0.4);
-            animation: float 3s ease-in-out infinite;
-            overflow: hidden;
-        }
+  /* gradient blob top */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(124,106,240,0.12) 0%, rgba(62,207,207,0.06) 50%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+  main { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 0 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+    border-bottom: 0.5px solid var(--border);
+  }
 
-        h1 {
-            color: #00a5a5;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0, 212, 212, 0.1);
-        }
+  .hero-text h1 {
+    font-family: var(--mono);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #e8e8f0 30%, var(--accent) 70%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
 
-        .username {
-            color: #0099cc;
-            font-size: 1.1em;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
+  .hero-text .handle {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+  }
 
-        .section {
-            margin-bottom: 30px;
-        }
+  .hero-text p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.7;
+  }
 
-        .section-title {
-            font-size: 1.3em;
-            color: #00a5a5;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-        }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
 
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: linear-gradient(135deg, #00d4d4, #0099cc);
-            border-radius: 2px;
-        }
+  .meta-pill {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    border: 0.5px solid var(--border2);
+    border-radius: 999px;
+    color: var(--muted);
+    background: var(--surface);
+  }
 
-        .social-links {
-            display: grid;
-            gap: 12px;
-        }
+  .hero-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    border: 1px solid var(--border2);
+    object-fit: cover;
+    background: var(--surface2);
+    flex-shrink: 0;
+  }
 
-        .social-link {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background: linear-gradient(135deg, rgba(0, 212, 212, 0.1), rgba(0, 153, 204, 0.1));
-            border: 2px solid #00d4d4;
-            border-radius: 12px;
-            text-decoration: none;
-            color: #00a5a5;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+  .hero-avatar-placeholder {
+    width: 96px;
+    height: 96px;
+    border-radius: 16px;
+    border: 1px solid var(--border2);
+    background: linear-gradient(135deg, var(--surface), var(--surface2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
 
-        .social-link:hover {
-            background: linear-gradient(135deg, #00d4d4, #0099cc);
-            color: white;
-            transform: translateX(10px);
-            box-shadow: 0 10px 25px rgba(0, 212, 212, 0.3);
-        }
+  /* ── SOCIALS ── */
+  .section { padding: 48px 0 0; }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
 
-        .social-link-icon {
-            font-size: 1.5em;
-            margin-right: 15px;
-            min-width: 30px;
-            text-align: center;
-        }
+  .socials-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-        .social-link-text {
-            display: flex;
-            flex-direction: column;
-        }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: var(--sans);
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  }
 
-        .social-link-platform {
-            font-size: 0.8em;
-            opacity: 0.8;
-        }
+  .social-link:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-1px);
+  }
 
-        .social-link-username {
-            font-size: 1em;
-        }
+  .social-link .icon {
+    font-size: 14px;
+    opacity: 0.8;
+  }
 
-        .divider {
-            height: 2px;
-            background: linear-gradient(to right, transparent, #00d4d4, transparent);
-            margin: 30px 0;
-        }
+  .social-link .sname { font-weight: 500; }
+  .social-link .shandle { font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
 
-        .about-section {
-            background: linear-gradient(135deg, rgba(0, 212, 212, 0.05), rgba(0, 153, 204, 0.05));
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 4px solid #00d4d4;
-            color: #333;
-            line-height: 1.6;
-        }
+  /* ── FILTER TABS ── */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 24px;
+  }
 
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #0099cc;
-            font-size: 0.9em;
-            opacity: 0.7;
-        }
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 0.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
 
-        @media (max-width: 600px) {
-            .container {
-                padding: 30px 20px;
-            }
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); }
 
-            h1 {
-                font-size: 2em;
-            }
+  .filter-btn.active {
+    background: var(--tag-bg);
+    border-color: var(--accent);
+    color: var(--tag-text);
+  }
 
-            .avatar {
-                width: 100px;
-                height: 100px;
-                font-size: 50px;
-            }
-        }
-    </style>
+  /* ── PROJECT GRID ── */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    cursor: pointer;
+  }
+
+  .project-card:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-2px);
+  }
+
+  .project-card.hidden { display: none; }
+
+  .card-thumb {
+    width: 100%;
+    height: 140px;
+    background: linear-gradient(135deg, var(--bg3), var(--surface2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    border-bottom: 0.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3));
+  }
+
+  .card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+  .card-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .card-desc {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 0.5px solid rgba(124,106,240,0.2);
+  }
+
+  .tag.game { background: rgba(62,207,207,0.1); color: #6dd9d9; border-color: rgba(62,207,207,0.2); }
+  .tag.tool { background: rgba(240,124,106,0.1); color: #f0a090; border-color: rgba(240,124,106,0.2); }
+  .tag.web { background: rgba(124,106,240,0.12); color: var(--tag-text); }
+
+  /* ── ABOUT ── */
+  .about-box {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin-top: 0;
+  }
+
+  .about-box p { color: var(--muted); font-size: 0.92rem; line-height: 1.8; }
+  .about-box p + p { margin-top: 12px; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 0.5px solid var(--border);
+    padding: 32px 0 0;
+    margin-top: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  footer p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* ── SKIP LINK ── */
+  a[href="#projects"] {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent2);
+    text-decoration: none;
+  }
+  a[href="#projects"]:hover { text-decoration: underline; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-avatar-placeholder { display: none; }
+    .project-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp 0.5s ease both; }
+  .section:nth-of-type(1) { animation: fadeUp 0.5s 0.1s ease both; }
+  .section:nth-of-type(2) { animation: fadeUp 0.5s 0.2s ease both; }
+  .section:nth-of-type(3) { animation: fadeUp 0.5s 0.3s ease both; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="profile-header">
-            <div class="avatar" id="avatar">
-                <img src="logo.jpeg" alt="Snizzle Logo">
-            </div>
-            <h1>Snizzle</h1>
-            <p class="username">@siuozl</p>
-        </div>
+<main>
 
-        <div class="section">
-            <div class="section-title">Gaming & Platforms</div>
-            <div class="social-links">
-                <a href="https://www.youtube.com/@snizzle.snizzer" target="_blank" class="social-link">
-                    <span class="social-link-icon">▶️</span>
-                    <span class="social-link-text">
-                        <span class="social-link-platform">YouTube</span>
-                        <span class="social-link-username">snizzle.snizzer</span>
-                    </span>
-                </a>
-                <a href="https://scratch.mit.edu/users/siuozl_snizzle" target="_blank" class="social-link">
-                    <span class="social-link-icon">🎮</span>
-                    <span class="social-link-text">
-                        <span class="social-link-platform">Scratch</span>
-                        <span class="social-link-username">siuozl_snizzle</span>
-                    </span>
-                </a>
-                <a href="#" class="social-link">
-                    <span class="social-link-icon">⛏️</span>
-                    <span class="social-link-text">
-                        <span class="social-link-platform">Minecraft Bedrock</span>
-                        <span class="social-link-username">siuozl1668</span>
-                    </span>
-                </a>
-                <a href="#" class="social-link">
-                    <span class="social-link-icon">⛏️</span>
-                    <span class="social-link-text">
-                        <span class="social-link-platform">Minecraft Java</span>
-                        <span class="social-link-username">siuozlplayz</span>
-                    </span>
-                </a>
-                <a href="https://github.com/siuozl" target="_blank" class="social-link">
-                    <span class="social-link-icon">💻</span>
-                    <span class="social-link-text">
-                        <span class="social-link-platform">GitHub</span>
-                        <span class="social-link-username">siuozl</span>
-                    </span>
-                </a>
-            </div>
-        </div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-text">
+      <a href="#projects" style="display:inline-block;margin-bottom:20px;">skip to projects ↓</a>
+      <h1>Snizzle</h1>
+      <p class="handle">@siuozl</p>
+      <p>Developer and creator. I build web tools, games, and things that probably shouldn't exist.</p>
+      <div class="hero-meta">
+        <span class="meta-pill">🌐 PWA dev</span>
+        <span class="meta-pill">⛏️ Minecraft</span>
+        <span class="meta-pill">🎮 Games</span>
+      </div>
+    </div>
+    <div class="hero-avatar-placeholder">S</div>
+  </div>
 
-        <div class="divider"></div>
+  <!-- SOCIALS -->
+  <div class="section">
+    <p class="section-title">Find me</p>
+    <div class="socials-grid">
+      <a class="social-link" href="https://github.com/siuozl" target="_blank" rel="noopener">
+        <span class="icon">⌥</span>
+        <span>
+          <div class="sname">GitHub</div>
+          <div class="shandle">siuozl</div>
+        </span>
+      </a>
+      <a class="social-link" href="https://www.youtube.com/@snizzle.snizzer" target="_blank" rel="noopener">
+        <span class="icon">▶</span>
+        <span>
+          <div class="sname">YouTube</div>
+          <div class="shandle">snizzle.snizzer</div>
+        </span>
+      </a>
+      <a class="social-link" href="https://scratch.mit.edu/users/siuozl_snizzle" target="_blank" rel="noopener">
+        <span class="icon">🐱</span>
+        <span>
+          <div class="sname">Scratch</div>
+          <div class="shandle">siuozl_snizzle</div>
+        </span>
+      </a>
+      <a class="social-link" href="#" target="_blank" rel="noopener">
+        <span class="icon">⛏</span>
+        <span>
+          <div class="sname">Minecraft Java</div>
+          <div class="shandle">siuozlplayz</div>
+        </span>
+      </a>
+      <a class="social-link" href="#" target="_blank" rel="noopener">
+        <span class="icon">⛏</span>
+        <span>
+          <div class="sname">Minecraft Bedrock</div>
+          <div class="shandle">siuozl1668</div>
+        </span>
+      </a>
+    </div>
+  </div>
 
-        <div class="section">
-            <div class="section-title">About</div>
-            <div class="about-section">
-                <p>Welcome to my profile! I'm Snizzle, a gamer and developer passionate about creating cool stuff across different platforms. Check out my social links above to see what I'm up to!</p>
-            </div>
-        </div>
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <p class="section-title">Projects</p>
 
-        <div class="footer">
-            <p>✨ Made with aqua vibes ✨</p>
-        </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web">Web</button>
+      <button class="filter-btn" data-filter="tool">Tool</button>
+      <button class="filter-btn" data-filter="game">Game</button>
+      <button class="filter-btn" data-filter="pwa">PWA</button>
+
     </div>
 
-    <script>
-        // Animate avatar on click
-        const avatar = document.getElementById('avatar');
-        avatar.addEventListener('click', function() {
-            this.style.animation = 'none';
-            setTimeout(() => {
-                this.style.animation = 'spin 0.6s ease-out';
-            }, 10);
-        });
+    <div class="project-grid" id="project-grid"></div>
+  </div>
 
-        // Add spin animation
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes spin {
-                0% {
-                    transform: rotateY(0deg);
-                }
-                100% {
-                    transform: rotateY(360deg);
-                }
-            }
-        `;
-        document.head.appendChild(style);
+  <!-- ABOUT -->
+  <div class="section">
+    <p class="section-title">About</p>
+    <div class="about-box">
+      <p>I'm Snizzle (@siuozl). I build web apps, tools, and games — mostly as PWAs. If it involves code, design, or breaking something to fix it, I'm probably into it.</p>
+      <p>This site is a work in progress, like everything else.</p>
+    </div>
+  </div>
 
-        // Add hover glow effect to social links
-        const socialLinks = document.querySelectorAll('.social-link');
-        socialLinks.forEach(link => {
-            link.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 10px 25px rgba(0, 212, 212, 0.5)';
-            });
-            link.addEventListener('mouseleave', function() {
-                this.style.boxShadow = '';
-            });
-        });
+  <footer>
+    <p>© 2026 Snizzle · <a href="https://github.com/siuozl" style="color:var(--muted);">siuozl</a></p>
+    <p>probably broke something</p>
+  </footer>
 
-        // Lazy load effect on page load
-        window.addEventListener('load', function() {
-            socialLinks.forEach((link, index) => {
-                link.style.opacity = '0';
-                link.style.transform = 'translateX(-20px)';
-                setTimeout(() => {
-                    link.style.transition = 'all 0.4s ease-out';
-                    link.style.opacity = '1';
-                    link.style.transform = 'translateX(0)';
-                }, index * 100);
-            });
-        });
-    </script>
+</main>
+
+<script>
+  /* ============================================================
+     PROJECT CONFIG — edit this to add/remove/update projects
+     icon: path to a PNG file (relative or absolute)
+     iconBg: fallback background color if icon is missing
+  ============================================================ */
+  const PROJECTS = [
+    {
+      title: "Article.MD",
+      href: "https://siuozl.github.io/ArticleDotMD",
+      icon: "icons/article-md.png",
+      iconBg: "linear-gradient(135deg,#1a1a2e,#2d1b5e)",
+      desc: "Markdown editor PWA with multi-config themes, IndexedDB file library, and collapsible sidebar.",
+      tags: ["web", "pwa", "tool"]
+    },
+    {
+      title: "Listing Lists",
+      href: "https://listing-lists.github.io",
+      icon: "icons/listing-lists.png",
+      iconBg: "linear-gradient(135deg,#0a1628,#1a3a5c)",
+      desc: "Shared family grocery list app. Node.js/Render backend, real-time sync across devices.",
+      tags: ["web", "pwa", "tool"]
+    },
+    {
+      title: "Build.Make",
+      href: "https://siuozl.github.io/build.make",
+      icon: "icons/build-make.png",
+      iconBg: "linear-gradient(135deg,#1a2820,#0d4a2a)",
+      desc: "Mobile-first block-based coding environment. Multi-language support.",
+      tags: ["web", "pwa", "tool"]
+    }
+  ];
+
+  function tagClass(t) {
+    if (t === "game") return "tag game";
+    if (t === "tool") return "tag tool";
+    if (t === "web")  return "tag web";
+    return "tag";
+  }
+
+  const grid = document.getElementById("project-grid");
+  PROJECTS.forEach(p => {
+    const tagsHTML = p.tags.map(t => `<span class="${tagClass(t)}">${t}</span>`).join("");
+    const card = document.createElement("a");
+    card.className = "project-card";
+    card.href = p.href;
+    card.target = "_blank";
+    card.rel = "noopener";
+    card.dataset.tags = p.tags.join(" ");
+    card.innerHTML = `
+      <div class="card-thumb" style="background:${p.iconBg};">
+        <img src="${p.icon}" alt="${p.title} icon"
+             onerror="this.style.display='none'"
+             style="width:64px;height:64px;object-fit:contain;border-radius:12px;position:relative;z-index:1;">
+      </div>
+      <div class="card-body">
+        <div class="card-title">${p.title}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-tags">${tagsHTML}</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+</script>
+
+<script>
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.project-card');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      cards.forEach(card => {
+        const tags = card.dataset.tags || '';
+        if (filter === 'all' || tags.includes(filter)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
 </body>
-</html> 
+</html>
