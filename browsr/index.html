@@ -28,7 +28,6 @@
       overflow: hidden;
     }
 
-    /* ── Noise grain overlay ── */
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0;
@@ -37,7 +36,6 @@
       pointer-events: none;
     }
 
-    /* ── Animated gradient mesh ── */
     .mesh {
       position: fixed; inset: 0; z-index: 0;
       background:
@@ -53,31 +51,16 @@
       100% { filter: hue-rotate(-15deg) brightness(0.95); }
     }
 
-    /* ── Scanlines ── */
     .scanlines {
       position: fixed; inset: 0; z-index: 1;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.08) 3px,
-        rgba(0,0,0,0.08) 4px
-      );
+      background: repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
       pointer-events: none;
     }
 
-    /* ── Corner decorations ── */
     .corner {
-      position: fixed;
-      width: 60px; height: 60px;
-      z-index: 2;
-      pointer-events: none;
+      position: fixed; width: 60px; height: 60px; z-index: 2; pointer-events: none;
     }
-    .corner::before, .corner::after {
-      content: '';
-      position: absolute;
-      background: var(--accent1);
-    }
+    .corner::before, .corner::after { content: ''; position: absolute; background: var(--accent1); }
     .corner::before { width: 100%; height: 2px; }
     .corner::after  { width: 2px; height: 100%; }
     .corner--tl { top: 20px; left: 20px; }
@@ -85,41 +68,26 @@
     .corner--bl { bottom: 20px; left: 20px; transform: scaleY(-1); }
     .corner--br { bottom: 20px; right: 20px; transform: scale(-1); }
 
-    /* ── Ticker strip ── */
     .ticker-wrap {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      z-index: 10;
-      height: 32px;
-      border-top: 1px solid rgba(0,245,212,0.2);
-      background: rgba(0,245,212,0.04);
-      overflow: hidden;
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+      height: 32px; border-top: 1px solid rgba(0,245,212,0.2);
+      background: rgba(0,245,212,0.04); overflow: hidden;
       display: flex; align-items: center;
     }
     .ticker-track {
-      display: flex;
-      gap: 80px;
-      white-space: nowrap;
-      animation: ticker 30s linear infinite;
+      display: flex; gap: 80px; white-space: nowrap;
+      animation: ticker 36s linear infinite;
     }
-    .ticker-item {
-      font-size: 10px;
-      letter-spacing: 0.15em;
-      color: var(--accent1);
-      opacity: 0.5;
-      text-transform: uppercase;
-    }
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
+    .ticker-item { font-size: 10px; letter-spacing: 0.15em; color: var(--accent1); opacity: 0.5; text-transform: uppercase; }
+    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-    /* ── Main layout ── */
+    /* ── Layout ── */
     .container {
       position: relative; z-index: 5;
       height: 100vh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      gap: 48px;
+      gap: 36px;
       padding-bottom: 48px;
     }
 
@@ -130,87 +98,111 @@
     }
     .logo {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(90px, 18vw, 200px);
-      line-height: 0.88;
-      letter-spacing: -0.01em;
-      color: transparent;
-      -webkit-text-stroke: 2px var(--text);
-      position: relative;
+      font-size: clamp(80px, 15vw, 180px);
+      line-height: 0.88; letter-spacing: -0.01em;
       display: inline-block;
     }
-    .logo .letter-b  { color: var(--text); -webkit-text-stroke: 0; }
-    .logo .letter-r  { color: var(--accent1); -webkit-text-stroke: 0; text-shadow: 0 0 40px var(--glow1); }
+    .logo .letter-b  { color: var(--text); }
+    .logo .letter-r  { color: var(--accent1); text-shadow: 0 0 40px var(--glow1); }
     .logo .letter-o  { color: transparent; -webkit-text-stroke: 2px var(--accent2); }
-    .logo .letter-w  { color: var(--accent3); -webkit-text-stroke: 0; text-shadow: 0 0 30px rgba(255,214,10,0.5); }
+    .logo .letter-w  { color: var(--accent3); text-shadow: 0 0 30px rgba(255,214,10,0.5); }
     .logo .letter-s  { color: transparent; -webkit-text-stroke: 2px var(--text); }
-    .logo .letter-r2 { color: var(--accent2); -webkit-text-stroke: 0; text-shadow: 0 0 40px var(--glow2); }
+    .logo .letter-r2 { color: var(--accent2); text-shadow: 0 0 40px var(--glow2); }
 
-    .tagline {
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 10px;
-    }
+    .tagline { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
     .tagline span { color: var(--accent1); }
+
+    /* ── Engine picker ── */
+    .engine-picker {
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+      width: min(720px, 92vw);
+      animation: fadeUp 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+    }
+
+    .engine-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 6px 13px;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.18s, border-color 0.18s, background 0.18s, transform 0.15s, box-shadow 0.18s;
+      overflow: hidden;
+    }
+    .engine-btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: var(--engine-color, var(--accent1));
+      opacity: 0;
+      transition: opacity 0.18s;
+    }
+    .engine-btn:hover {
+      color: var(--text);
+      border-color: var(--engine-color, var(--accent1));
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .engine-btn.active {
+      color: #080a0f;
+      border-color: var(--engine-color, var(--accent1));
+      background: var(--engine-color, var(--accent1));
+      box-shadow: 0 0 20px color-mix(in srgb, var(--engine-color, var(--accent1)) 60%, transparent);
+    }
+    .engine-btn:not(.active):hover::after { opacity: 0.06; }
+
+    /* engine dot indicator */
+    .engine-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      margin-right: 5px;
+      vertical-align: middle;
+      opacity: 0.6;
+    }
+    .engine-btn.active .engine-dot { opacity: 1; }
 
     /* ── Search bar ── */
     .search-wrap {
       width: min(680px, 90vw);
-      animation: fadeUp 0.9s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+      animation: fadeUp 0.9s 0.2s cubic-bezier(0.16,1,0.3,1) both;
     }
 
     .search-box {
-      position: relative;
-      display: flex; align-items: center;
+      position: relative; display: flex; align-items: center;
     }
-
-    /* glowing border ring */
     .search-box::before {
-      content: '';
-      position: absolute; inset: -2px;
-      border-radius: 4px;
-      background: linear-gradient(130deg, var(--accent1), var(--accent2), var(--accent3));
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 0.3s;
+      content: ''; position: absolute; inset: -2px; border-radius: 4px;
+      background: linear-gradient(130deg, var(--active-color, var(--accent1)), var(--accent2), var(--accent3));
+      z-index: -1; opacity: 0; transition: opacity 0.3s, background 0.4s;
     }
     .search-box:focus-within::before { opacity: 1; }
     .search-box:focus-within::after {
-      content: '';
-      position: absolute; inset: -2px;
-      border-radius: 4px;
-      background: linear-gradient(130deg, var(--accent1), var(--accent2), var(--accent3));
-      filter: blur(16px);
-      z-index: -2;
-      opacity: 0.6;
+      content: ''; position: absolute; inset: -2px; border-radius: 4px;
+      background: linear-gradient(130deg, var(--active-color, var(--accent1)), var(--accent2), var(--accent3));
+      filter: blur(16px); z-index: -2; opacity: 0.55;
       animation: pulseGlow 2s ease-in-out infinite;
     }
-    @keyframes pulseGlow {
-      0%, 100% { opacity: 0.4; }
-      50%       { opacity: 0.8; }
-    }
+    @keyframes pulseGlow { 0%,100% { opacity: 0.35; } 50% { opacity: 0.7; } }
 
     .search-icon {
-      position: absolute; left: 18px;
-      width: 18px; height: 18px;
-      stroke: var(--muted);
-      transition: stroke 0.3s;
-      flex-shrink: 0;
+      position: absolute; left: 18px; width: 18px; height: 18px;
+      stroke: var(--muted); transition: stroke 0.3s; flex-shrink: 0; z-index: 1;
     }
-    .search-box:focus-within .search-icon { stroke: var(--accent1); }
+    .search-box:focus-within .search-icon { stroke: var(--active-color, var(--accent1)); }
 
     #searchInput {
       width: 100%;
-      background: #0d1117;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 3px;
-      color: var(--text);
-      font-family: 'Space Mono', monospace;
-      font-size: 15px;
-      padding: 18px 130px 18px 54px;
-      outline: none;
-      caret-color: var(--accent1);
+      background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 3px;
+      color: var(--text); font-family: 'Space Mono', monospace; font-size: 15px;
+      padding: 18px 120px 18px 54px;
+      outline: none; caret-color: var(--active-color, var(--accent1));
       transition: border-color 0.3s, background 0.3s;
     }
     #searchInput::placeholder { color: var(--muted); }
@@ -218,100 +210,69 @@
 
     .go-btn {
       position: absolute; right: 8px;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: var(--accent1);
-      color: #080a0f;
-      border: none; border-radius: 2px;
-      padding: 10px 18px;
-      cursor: pointer;
-      font-weight: 700;
-      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      font-family: 'Space Mono', monospace; font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--active-color, var(--accent1));
+      color: #080a0f; border: none; border-radius: 2px;
+      padding: 10px 16px; cursor: pointer; font-weight: 700;
+      transition: background 0.25s, transform 0.15s, box-shadow 0.2s, filter 0.2s;
     }
     .go-btn:hover {
-      background: #00ffdf;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 24px rgba(0,245,212,0.4);
+      filter: brightness(1.15); transform: translateY(-1px);
+      box-shadow: 0 6px 24px color-mix(in srgb, var(--active-color, var(--accent1)) 50%, transparent);
     }
     .go-btn:active { transform: scale(0.96); }
 
-    /* ── Mode badge ── */
+    /* ── Mode row ── */
     .mode-row {
       display: flex; align-items: center; gap: 8px;
-      margin-top: 14px;
-      min-height: 22px;
+      margin-top: 12px; min-height: 20px;
     }
     .badge {
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 2px;
-      font-weight: 700;
-      opacity: 0;
-      transform: translateY(4px);
+      font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 2px; font-weight: 700;
+      opacity: 0; transform: translateY(4px);
       transition: opacity 0.2s, transform 0.2s;
     }
     .badge.visible { opacity: 1; transform: translateY(0); }
     .badge--url    { background: rgba(0,245,212,0.15); color: var(--accent1); border: 1px solid rgba(0,245,212,0.3); }
     .badge--search { background: rgba(247,37,133,0.12); color: var(--accent2); border: 1px solid rgba(247,37,133,0.3); }
-    .mode-label {
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-    }
+    .mode-label { font-size: 10px; color: var(--muted); letter-spacing: 0.08em; }
 
     /* ── Quick links ── */
     .quick-links {
       display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
-      animation: fadeUp 0.9s 0.3s cubic-bezier(0.16,1,0.3,1) both;
+      animation: fadeUp 0.9s 0.35s cubic-bezier(0.16,1,0.3,1) both;
     }
     .quick-link {
-      font-family: 'Space Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      padding: 7px 14px;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 2px;
+      font-family: 'Space Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      padding: 7px 14px; border: 1px solid rgba(255,255,255,0.07); border-radius: 2px;
       transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
-    .quick-link:hover {
-      color: var(--accent3);
-      border-color: var(--accent3);
-      background: rgba(255,214,10,0.06);
-    }
+    .quick-link:hover { color: var(--accent3); border-color: var(--accent3); background: rgba(255,214,10,0.06); }
 
-    /* ── Animations ── */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-28px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp   { from { opacity: 0; transform: translateY(22px); }  to { opacity: 1; transform: translateY(0); } }
 
-    /* ── Version stamp ── */
     .version {
       position: fixed; bottom: 42px; right: 28px;
-      font-size: 9px;
-      letter-spacing: 0.2em;
-      color: rgba(255,255,255,0.1);
-      text-transform: uppercase;
-      z-index: 6;
+      font-size: 9px; letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.1); text-transform: uppercase; z-index: 6;
     }
+
+    /* engine switch flash */
+    @keyframes engineSwitch {
+      0%   { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+    .engine-switched { animation: engineSwitch 0.25s ease both; }
   </style>
 </head>
 <body>
-
   <div class="mesh"></div>
   <div class="scanlines"></div>
-
   <div class="corner corner--tl"></div>
   <div class="corner corner--tr"></div>
   <div class="corner corner--bl"></div>
@@ -326,18 +287,16 @@
       <p class="tagline">your web · <span>everywhere</span></p>
     </div>
 
+    <!-- Engine picker -->
+    <div class="engine-picker" id="enginePicker"></div>
+
+    <!-- Search -->
     <div class="search-wrap">
-      <div class="search-box">
+      <div class="search-box" id="searchBox">
         <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search or enter a URL…"
-          autocomplete="off"
-          spellcheck="false"
-        />
+        <input id="searchInput" type="text" placeholder="Search or enter a URL…" autocomplete="off" spellcheck="false" />
         <button class="go-btn" id="goBtn">Go →</button>
       </div>
       <div class="mode-row">
@@ -356,48 +315,81 @@
 
   </div>
 
-  <!-- Ticker -->
   <div class="ticker-wrap">
     <div class="ticker-track">
       <span class="ticker-item">Browsr — Your shortcut to the web</span>
-      <span class="ticker-item">Type a URL or search query</span>
+      <span class="ticker-item">10 search engines · one shortcut</span>
       <span class="ticker-item">Press Enter to go</span>
       <span class="ticker-item">Fast. Minimal. Yours.</span>
       <span class="ticker-item">Browsr — Your shortcut to the web</span>
-      <span class="ticker-item">Type a URL or search query</span>
+      <span class="ticker-item">10 search engines · one shortcut</span>
       <span class="ticker-item">Press Enter to go</span>
       <span class="ticker-item">Fast. Minimal. Yours.</span>
     </div>
   </div>
 
-  <div class="version">Browsr v1.0</div>
+  <div class="version">Browsr v2.0</div>
 
   <script>
-    const input    = document.getElementById('searchInput');
-    const goBtn    = document.getElementById('goBtn');
-    const badge    = document.getElementById('modeBadge');
-    const lbl      = document.getElementById('modeLabel');
+    // ── Engine definitions ──────────────────────────────────────────
+    const ENGINES = [
+      { id: 'google',     name: 'Google',     color: '#4285f4', url: q => `https://www.google.com/search?q=${q}` },
+      { id: 'bing',       name: 'Bing',       color: '#00897b', url: q => `https://www.bing.com/search?q=${q}` },
+      { id: 'duckduckgo', name: 'DDG',        color: '#de5833', url: q => `https://duckduckgo.com/?q=${q}` },
+      { id: 'brave',      name: 'Brave',      color: '#ff6a00', url: q => `https://search.brave.com/search?q=${q}` },
+      { id: 'ecosia',     name: 'Ecosia',     color: '#4caf50', url: q => `https://www.ecosia.org/search?q=${q}` },
+      { id: 'yahoo',      name: 'Yahoo',      color: '#6001d2', url: q => `https://search.yahoo.com/search?p=${q}` },
+      { id: 'startpage',  name: 'Startpage',  color: '#007aff', url: q => `https://www.startpage.com/search?query=${q}` },
+      { id: 'kagi',       name: 'Kagi',       color: '#ff3d82', url: q => `https://kagi.com/search?q=${q}` },
+      { id: 'perplexity', name: 'Perplexity', color: '#20b2aa', url: q => `https://www.perplexity.ai/search?q=${q}` },
+      { id: 'yandex',     name: 'Yandex',     color: '#fc3f1d', url: q => `https://yandex.com/search/?text=${q}` },
+    ];
 
+    const LS_KEY = 'browsr_engine';
+    let activeId = localStorage.getItem(LS_KEY) || 'google';
+
+    // ── Build engine buttons ────────────────────────────────────────
+    const picker = document.getElementById('enginePicker');
+    ENGINES.forEach(eng => {
+      const btn = document.createElement('button');
+      btn.className = 'engine-btn' + (eng.id === activeId ? ' active' : '');
+      btn.dataset.id = eng.id;
+      btn.style.setProperty('--engine-color', eng.color);
+      btn.innerHTML = `<span class="engine-dot"></span>${eng.name}`;
+      btn.addEventListener('click', () => setEngine(eng.id));
+      picker.appendChild(btn);
+    });
+
+    function setEngine(id) {
+      activeId = id;
+      localStorage.setItem(LS_KEY, id);
+      document.querySelectorAll('.engine-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.id === id);
+      });
+      const eng = ENGINES.find(e => e.id === id);
+      // Pulse the search area colour
+      document.documentElement.style.setProperty('--active-color', eng.color);
+      updateMode();
+      // Flash input
+      const inp = document.getElementById('searchInput');
+      inp.classList.remove('engine-switched');
+      void inp.offsetWidth;
+      inp.classList.add('engine-switched');
+      inp.focus();
+    }
+
+    // Set initial active colour
+    const initEng = ENGINES.find(e => e.id === activeId) || ENGINES[0];
+    document.documentElement.style.setProperty('--active-color', initEng.color);
+
+    // ── URL detection ───────────────────────────────────────────────
     function looksLikeURL(str) {
       str = str.trim();
       if (!str) return false;
-
-      // Already has a scheme
       if (/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(str)) return true;
-
-      // Bare hostname patterns: something.tld or something.tld/path
-      // Must have at least one dot and a recognised-ish TLD (2–6 chars)
-      const bareHost = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[^\s]*)?(\?[^\s]*)?$/.test(str);
-      // Reject if it looks like a plain word with a dot extension that's clearly not a TLD phrase
-      // (e.g. "hello.world!" has a trailing !, handled by the regex above)
-      if (bareHost) return true;
-
-      // localhost[:port]
+      if (/^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[^\s]*)?(\?[^\s]*)?$/.test(str)) return true;
       if (/^localhost(:\d+)?(\/.*)?$/.test(str)) return true;
-
-      // IP address
       if (/^(\d{1,3}\.){3}\d{1,3}(:\d+)?(\/.*)?$/.test(str)) return true;
-
       return false;
     }
 
@@ -407,22 +399,30 @@
       return 'https://' + str;
     }
 
+    // ── Navigation ──────────────────────────────────────────────────
     function navigate() {
       const val = input.value.trim();
       if (!val) return;
-      const dest = looksLikeURL(val)
-        ? normalise(val)
-        : 'https://www.google.com/search?q=' + encodeURIComponent(val);
+      let dest;
+      if (looksLikeURL(val)) {
+        dest = normalise(val);
+      } else {
+        const eng = ENGINES.find(e => e.id === activeId) || ENGINES[0];
+        dest = eng.url(encodeURIComponent(val));
+      }
       window.location.href = dest;
     }
 
+    // ── Mode badge ──────────────────────────────────────────────────
+    const input  = document.getElementById('searchInput');
+    const goBtn  = document.getElementById('goBtn');
+    const badge  = document.getElementById('modeBadge');
+    const lbl    = document.getElementById('modeLabel');
+
     function updateMode() {
       const val = input.value.trim();
-      if (!val) {
-        badge.className = 'badge';
-        lbl.textContent = '';
-        return;
-      }
+      const eng = ENGINES.find(e => e.id === activeId) || ENGINES[0];
+      if (!val) { badge.className = 'badge'; lbl.textContent = ''; return; }
       if (looksLikeURL(val)) {
         badge.className = 'badge badge--url visible';
         badge.textContent = 'URL';
@@ -430,7 +430,7 @@
       } else {
         badge.className = 'badge badge--search visible';
         badge.textContent = 'Search';
-        lbl.textContent = '→ Google';
+        lbl.textContent = `→ ${eng.name}`;
       }
     }
 
@@ -438,7 +438,13 @@
     input.addEventListener('keydown', e => { if (e.key === 'Enter') navigate(); });
     goBtn.addEventListener('click', navigate);
 
-    // Auto-focus
+    // Keyboard shortcut: digits 1–9, 0 to pick engine
+    document.addEventListener('keydown', e => {
+      if (document.activeElement === input) return;
+      if (e.key >= '1' && e.key <= '9') setEngine(ENGINES[parseInt(e.key) - 1]?.id || activeId);
+      if (e.key === '0') setEngine(ENGINES[9]?.id || activeId);
+    });
+
     input.focus();
   </script>
 </body>
